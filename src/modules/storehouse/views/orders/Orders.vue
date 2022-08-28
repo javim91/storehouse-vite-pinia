@@ -17,19 +17,15 @@
     <table class="table text-left expanded">
       <thead>
         <tr>
-          <th width="15%">Order Nº</th>
           <th width="45%">Provider</th>
           <th width="15%">Date / Hour</th>
-          <th width="15%">Total Amount</th>
           <th width="10%" class="text-center">Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in orderStore.filteredOrders" v-bind:key="item.id" class="align-middle">
-          <td>{{ item.number }}</td>
           <td>{{ item.providerName }}</td>
-          <td>{{ item.date }} / {{ item.hour }}</td>
-          <td>{{ item.totalPrice }} €</td>
+          <td>{{ item.datetime }}</td>
           <td class="text-center">
             <button type="button" class="btn btn-warning mr5" @click="edit(item)"><i class="fa fa-edit"></i></button>
             <button type="button" class="btn btn-danger" @click="remove(item)"><i class="fa fa-trash"></i></button>

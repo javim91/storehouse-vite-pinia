@@ -10,7 +10,14 @@
     <div class="mt20">
 
       <label for="name" class="form-label">Product name</label>
-      <input type="text" v-model="product.name" @keypress.enter="save" class="form-control inline" placeholder="Product name"/>
+      <input type="text" v-model="product.name" class="form-control inline" placeholder="Product name"/>
+
+    </div>    
+    
+    <div class="mt20">
+
+      <label for="name" class="form-label">Multiply</label>
+      <input type="number" v-model="product.multiply" class="form-control inline" placeholder="Multiply"/>
 
     </div>    
 

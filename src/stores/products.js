@@ -43,7 +43,8 @@ export const useProductStore = defineStore('products', {
                 products.push({
                     id,
                     ...data[id],
-                    'providerName' : provider.name
+                    'providerName' : provider.name,
+                    'amount' : 0
                 })
             }
          
@@ -62,8 +63,8 @@ export const useProductStore = defineStore('products', {
          
         async createProduct( product ) {
          
-            const { code, name, providerId } = product
-            const dataToSave = { code, name, providerId }
+            const { code, name, multiply, providerId } = product
+            const dataToSave = { code, name, multiply, providerId }
          
             const { data } = await storehouseApi.post(`products.json`, dataToSave)
             
@@ -78,8 +79,8 @@ export const useProductStore = defineStore('products', {
          
         async updateProduct( product ) {
          
-            const { code, name, providerId } = product
-            const dataToSave = { code, name, providerId }
+            const { code, name, multiply, providerId } = product
+            const dataToSave = { code, name, multiply, providerId }
          
             const { data } = await storehouseApi.put(`products/${product.id}.json`, dataToSave)
             

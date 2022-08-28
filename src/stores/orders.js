@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import moment from 'moment';
 
 import storehouseApi from '@/api/storehouseApi';
 
@@ -56,19 +57,51 @@ export const useOrderStore = defineStore('orders', {
         },
          
          
-        async createOrder( order ) {
-         
-            const { providerName, products } = order
-            const dataToSave = { code, name, providerId }
-         
-            const { data } = await storehouseApi.post(`orders.json`, dataToSave)
-            
-         
-            dataToSave.id = data.name
-         
-            this.orders = [ dataToSave, ...this.orders ]
-         
-            return data.name
+        async createOrder( cart ) {
+
+            const orders = [];
+
+            cart.map( (productCart) => {
+                const { code, name, amount, multiply, providerName, providerId } = productCart
+
+                const orderProviderIndex = orders.findIndex((order) => order.providerId === providerId)
+
+                if(orderProviderIndex<0){
+
+                    let order = {
+                        providerId,
+                        providerName,
+                        products: [],
+                        datetime: moment().format("DD/MM/YYYY hh:mm")
+                    }
+    
+                    order.products.push({
+                        code,
+                        name,
+                        amount,
+                        multiply,
+                    })
+
+                    orders.push(order)
+
+                } else {
+
+                    orders[orderProviderIndex].products.push({
+                        code,
+                        name,
+                        amount,
+                        multiply,
+                    })
+
+                }               
+                
+            })
+
+            orders.map( async (order) => {
+                const { data } = await storehouseApi.post(`orders.json`, order)
+                orders.id = data.name
+                this.orders = [ order, ...this.orders ]
+            })
          
          },
          
@@ -89,6 +122,7 @@ export const useOrderStore = defineStore('orders', {
             await storehouseApi.delete(`/orders/${id}.json`)
             
             this.order = this.orders.filter( order => order.id !== id )
+            this.filteredOrders = this.order
             
             return id
         }
